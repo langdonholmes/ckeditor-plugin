@@ -3,7 +3,6 @@ const ButtonView = window.CKEditor5.ui.ButtonView;
 const Command = window.CKEditor5.core.Command;
 const enablePlaceholder = window.CKEditor5.engine.enablePlaceholder;
 const Widget = window.CKEditor5.widget.Widget;
-const toWidget = window.CKEditor5.widget.toWidget;
 const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
 
 export class CalloutCaption extends Plugin {
@@ -38,7 +37,11 @@ export class CalloutCaption extends Plugin {
 
             buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
 
-            buttonView.bind('label').to(command, 'value', value => value ? t('Toggle title/term off') : t('Toggle title/term on'));
+            buttonView.bind('label').to(
+                command, 'value',
+                command, 'isEnabled', // set custom property so ToolTip displays one of source/keyterm/label/etc.
+                (value, isEnabled) => `Toggle source/keyterm/label ${value ? 'off' : 'on'}`
+                );
 
             this.listenTo(buttonView, 'execute', () => {
                 editor.execute('toggleCalloutCaption');
