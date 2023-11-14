@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This is a simple testing bed for the editor used in our Strapi app. We need some custom functionality, and it is easier to test this separately from the Strapi repository.
+
 ## Available Scripts
 
 In the project directory, you can run:
