@@ -1,3 +1,5 @@
+import './callout.css';
+
 const Plugin = window.CKEditor5.core.Plugin;
 const ButtonView = window.CKEditor5.ui.ButtonView;
 const Command = window.CKEditor5.core.Command;
@@ -67,7 +69,7 @@ export class Callout extends Plugin {
             allowIn: 'callout',
 
             // Allow content which is allowed in the root (e.g. paragraphs).
-            allowContentOf: '$root',
+            allowContentOf: '$container',
         });
     }
 
@@ -139,6 +141,7 @@ class InsertCalloutCommand extends Command {
     refresh() {
         const model = this.editor.model;
         const selection = model.document.selection;
+        
         const allowedIn = model.schema.findAllowedParent(
             selection.getFirstPosition(),
             'callout'

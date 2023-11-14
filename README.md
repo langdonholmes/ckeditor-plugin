@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+ - This is a simple testing bed for the editor used in our Strapi app. We need some custom functionality, and it is easier to test this separately from the Strapi repository.
+
+ - It is configured with CKEditorInspector. You will need to select ![Editor-2](image.png) to see the updates. This repository uses a DLL build of CKEditor5 because that is what we use in Strapi.
+
 ## Available Scripts
 
 In the project directory, you can run:

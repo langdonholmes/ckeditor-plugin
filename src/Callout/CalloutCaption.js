@@ -3,7 +3,6 @@ const ButtonView = window.CKEditor5.ui.ButtonView;
 const Command = window.CKEditor5.core.Command;
 const enablePlaceholder = window.CKEditor5.engine.enablePlaceholder;
 const Widget = window.CKEditor5.widget.Widget;
-const toWidget = window.CKEditor5.widget.toWidget;
 const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
 
 export class CalloutCaption extends Plugin {
@@ -38,13 +37,18 @@ export class CalloutCaption extends Plugin {
 
             buttonView.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled');
 
-            buttonView.bind('label').to(command, 'value', value => value ? t('Toggle title/term off') : t('Toggle title/term on'));
+            buttonView.bind('label').to(
+                command, 'value',
+                command, 'isEnabled', // set custom property so ToolTip displays one of source/keyterm/label/etc.
+                (value, isEnabled) => `Toggle source/keyterm/label ${value ? 'off' : 'on'}`
+                );
 
             this.listenTo(buttonView, 'execute', () => {
                 editor.execute('toggleCalloutCaption');
 
-                const modelCaptionElement = getCaptionFromModelSelection(editor.model.document.selection);
-                console.log("Model caption element (buttonViewlistener", modelCaptionElement)
+                const modelCalloutElement = getCalloutFromModelSelection(editor.model.document.selection);
+                const modelCaptionElement = getCaptionFromCalloutModelElement(modelCalloutElement);
+
                 if (modelCaptionElement) {
                     const figcaptionElement = editor.editing.mapper.toViewElement(modelCaptionElement);
 
@@ -129,22 +133,22 @@ class ToggleCalloutCaptionCommand extends Command {
         const selectedElement = selection.getSelectedElement();
 
         if (!selectedElement) {
-            const ancestorCaptionElement = getCaptionFromModelSelection(selection);
-            this.isEnabled = !!ancestorCaptionElement;
-            this.value = !!ancestorCaptionElement;
+            const calloutElement = getCalloutFromModelSelection(selection);
+            this.isEnabled = !!calloutElement;
+            this.calloutElement = calloutElement;
+            const captionElement = getCaptionFromCalloutModelElement(calloutElement);
+            this.value = !!captionElement;
             return;
         }
-        console.log("Selected element", selectedElement)
 
-        this.isEnabled = selectedElement.is('element', 'callout') || selectedElement.parent.is('element', 'callout');
+        this.isEnabled = selectedElement.is('element', 'callout');
 
-        console.log("Is enabled", this.isEnabled)
         if (!this.isEnabled) {
             this.value = false;
         } else {    
             this.value = !!getCaptionFromCalloutModelElement(selectedElement);
+            this.calloutElement = selectedElement;
         }
-        console.log("Enabled", this.isEnabled, "Value", this.value)
     }
 
     execute() {
@@ -158,55 +162,35 @@ class ToggleCalloutCaptionCommand extends Command {
     }
 
     _showCalloutCaption(writer) {
-        const model = this.editor.model;
-        const selection = model.document.selection;
-        let selectedCallout = selection.getSelectedElement();
-        
         const newCaptionElement = writer.createElement('caption');
-        writer.append(newCaptionElement, selectedCallout);
+        writer.append(newCaptionElement, this.calloutElement);
         writer.setSelection(newCaptionElement, 'in');
     }
 
     _hideCalloutCaption(writer) {
-        const model = this.editor.model;
-        const selection = model.document.selection;
-        let selectedCallout = selection.getSelectedElement();
-        let captionElement;
-
-        if (selectedCallout) {
-            captionElement = getCaptionFromCalloutModelElement(selectedCallout);
-        } else {
-            console.log("Searching for caption from Model Selection. No selected callout.")
-            captionElement = getCaptionFromModelSelection(selection);
-            selectedCallout = captionElement.parent;
-        }
-        writer.setSelection(selectedCallout, 'on');
+        const captionElement = getCaptionFromCalloutModelElement(this.calloutElement);
+        writer.setSelection(this.calloutElement, 'on');
         writer.remove(captionElement);
     }
 }
 
 
-function getCaptionFromModelSelection(selection) {
-    const captionElement = selection.getFirstPosition().findAncestor('caption');
+function getCalloutFromModelSelection(selection) {
+    const calloutElement = selection.getFirstPosition().findAncestor('callout');
 
-    if (!captionElement) {
+    if (!calloutElement) {
         return null;
     }
 
-    if (captionElement.parent.is('element', 'callout')) {
-        console.log("Parent is callout", captionElement)
-        return captionElement;
-    }
-
-    if (captionElement.parent.parent.is('element', 'callout')) {
-        console.log("Parent of parent is callout", captionElement.parent)
-        return captionElement.parent;
-    }
-
-    return null;
+    return calloutElement;
+    
 }
 
 function getCaptionFromCalloutModelElement(calloutModelElement) {
+    if (!calloutModelElement) {
+        return null;
+    }
+
     for (const node of calloutModelElement.getChildren()) {
         if (node.is('element', 'caption')) {
             return node;
@@ -217,7 +201,7 @@ function getCaptionFromCalloutModelElement(calloutModelElement) {
 
 function matchCalloutCaptionViewElement( element ) {
     // Convert only captions for callouts.
-    if ( element.name == 'figcaption' && element.parent?.is('element', 'figure') && element.parent?.hasClass('callout')) {
+    if ( element.name === 'figcaption' && element.parent?.is('element', 'figure') && element.parent?.hasClass('callout')) {
         return { name: true };
     }
 

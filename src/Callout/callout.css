@@ -1,0 +1,36 @@
+:root {
+    --ck-color-callout-caption-background: hsl(0, 0%, 97%);
+    --ck-color-callout-caption-text: hsl(0, 0%, 20%);
+    --ck-color-callout-caption-highlighted-background: hsl(52deg 100% 50%);
+}
+
+.ck-content figure.callout {
+    display: table;
+    width: 100%;
+    margin: 2em 0;
+}
+
+.ck-content figure.callout > figcaption {
+    display: table-caption;
+    width: 100%;
+    word-break: normal;
+    color: var(--ck-color-callout-caption-text);
+    padding: 0.6em;
+    font-size: .75em;
+    outline-offset: -1px;
+    caption-side: top;
+}
+
+.ck-ck-editor__editable .callout > figcaption.callout__caption--highlighted {
+    background: var(--ck-color-callout-caption-highlighted-background);
+}
+
+@keyframes ck-callout-caption-highlight {
+    0% {
+        background: var(--ck-color-callout-caption-highlighted-background);
+    }
+
+    100% {
+        background: var(--ck-color-callout-caption-background);
+    }
+}

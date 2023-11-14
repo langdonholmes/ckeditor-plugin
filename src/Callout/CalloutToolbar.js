@@ -25,13 +25,10 @@ export class CalloutToolbar extends Plugin {
 function getClosestSelectedCalloutWidget(selection) {
     const selectionPosition = selection.getFirstPosition();
     if (!selectionPosition) {
-        console.log("No selection position")
         return null;
     }
     const viewElement = selection.getSelectedElement();
-    // console.log("View element", viewElement)
     if ( viewElement && viewElement.getCustomProperty('callout')) {
-        console.log("View element selected", viewElement)
         return viewElement;
     }
 
@@ -39,11 +36,9 @@ function getClosestSelectedCalloutWidget(selection) {
 
     while (parent) {
         if ( parent.is('element') && parent.getCustomProperty('callout')) {
-            console.log("Parent selected", parent)
             return parent;
         }
         parent = parent.parent;
     }
-    console.log("no closest callout widget!!")
     return null;
 }
