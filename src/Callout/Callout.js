@@ -3,7 +3,6 @@ import './callout.css';
 const Plugin = window.CKEditor5.core.Plugin;
 const ButtonView = window.CKEditor5.ui.ButtonView;
 const Command = window.CKEditor5.core.Command;
-const enablePlaceholder = window.CKEditor5.engine.enablePlaceholder;
 const Widget = window.CKEditor5.widget.Widget;
 const toWidget = window.CKEditor5.widget.toWidget;
 const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
@@ -99,7 +98,8 @@ export class Callout extends Plugin {
                 });
                 viewWriter.setCustomProperty('callout', true, figure);
                 return toWidget(figure, viewWriter, {
-                    label: 'callout widget'
+                    label: 'callout widget',
+                    hasSelectionHandle: true
                 });
             },
         });

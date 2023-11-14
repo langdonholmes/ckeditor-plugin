@@ -1,12 +1,10 @@
+import {getClosestSelectedCalloutWidget} from './CalloutUtils';
+
 const Plugin = window.CKEditor5.core.Plugin;
 const WidgetToolbarRepository = window.CKEditor5.widget.WidgetToolbarRepository;
-const isWidget = window.CKEditor5.widget.isWidget;
+
 export class CalloutToolbar extends Plugin {
     value;
-
-    static get pluginName() {
-        return 'calloutToolbar';
-    }
 
     afterInit() {
         const editor = this.editor;
@@ -22,23 +20,23 @@ export class CalloutToolbar extends Plugin {
     }
 }
 
-function getClosestSelectedCalloutWidget(selection) {
-    const selectionPosition = selection.getFirstPosition();
-    if (!selectionPosition) {
-        return null;
-    }
-    const viewElement = selection.getSelectedElement();
-    if ( viewElement && viewElement.getCustomProperty('callout')) {
-        return viewElement;
-    }
+// function getClosestSelectedCalloutWidget(selection) {
+//     const selectionPosition = selection.getFirstPosition();
+//     if (!selectionPosition) {
+//         return null;
+//     }
+//     const viewElement = selection.getSelectedElement();
+//     if ( viewElement && viewElement.getCustomProperty('callout')) {
+//         return viewElement;
+//     }
 
-    let parent = selectionPosition.parent;
+//     let parent = selectionPosition.parent;
 
-    while (parent) {
-        if ( parent.is('element') && parent.getCustomProperty('callout')) {
-            return parent;
-        }
-        parent = parent.parent;
-    }
-    return null;
-}
+//     while (parent) {
+//         if ( parent.is('element') && parent.getCustomProperty('callout')) {
+//             return parent;
+//         }
+//         parent = parent.parent;
+//     }
+//     return null;
+// }
