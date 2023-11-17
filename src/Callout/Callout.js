@@ -16,6 +16,14 @@ export class Callout extends Plugin {
         return [Widget];
     }
 
+	constructor( editor: Editor ) {
+		super();
+
+		this.editor = editor;
+
+		this.set( 'isEnabled', true );
+	}
+    
     init() {
         const editor = this.editor;
         const t = editor.t; // translate

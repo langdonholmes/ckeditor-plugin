@@ -19,24 +19,3 @@ export class CalloutToolbar extends Plugin {
         });
     }
 }
-
-// function getClosestSelectedCalloutWidget(selection) {
-//     const selectionPosition = selection.getFirstPosition();
-//     if (!selectionPosition) {
-//         return null;
-//     }
-//     const viewElement = selection.getSelectedElement();
-//     if ( viewElement && viewElement.getCustomProperty('callout')) {
-//         return viewElement;
-//     }
-
-//     let parent = selectionPosition.parent;
-
-//     while (parent) {
-//         if ( parent.is('element') && parent.getCustomProperty('callout')) {
-//             return parent;
-//         }
-//         parent = parent.parent;
-//     }
-//     return null;
-// }
