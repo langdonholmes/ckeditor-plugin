@@ -9,7 +9,7 @@ const toWidgetEditable = window.CKEditor5.widget.toWidgetEditable;
 
 export class Callout extends Plugin {
     static get pluginName() {
-        return 'callout';
+        return 'keyterm';
     }
 
     static get requires() {
@@ -28,13 +28,13 @@ export class Callout extends Plugin {
         const editor = this.editor;
         const t = editor.t; // translate
 
-        editor.ui.componentFactory.add('callout', (locale) => {
-            const command = editor.commands.get('insertCallout');
+        editor.ui.componentFactory.add('keyterm', (locale) => {
+            const command = editor.commands.get('insertKeyterm');
 
             const buttonView = new ButtonView(locale);
 
             buttonView.set({
-                label: t('Insert Callout'),
+                label: t('Insert Keyterm'),
                 withText: true,
                 tooltip: true,
             });
@@ -44,7 +44,7 @@ export class Callout extends Plugin {
                 .to(command, 'value', 'isEnabled');
 
             this.listenTo(buttonView, 'execute', () =>
-                editor.execute('insertCallout')
+                editor.execute('insertKeyterm')
             );
 
             return buttonView;
@@ -54,28 +54,28 @@ export class Callout extends Plugin {
         this._defineConverters();
 
         this.editor.commands.add(
-            'insertCallout',
-            new InsertCalloutCommand(this.editor)
+            'insertKeyterm',
+            new InsertKeytermCommand(this.editor)
         );
     }
 
     _defineSchema() {
         const schema = this.editor.model.schema;
 
-        schema.register('callout', {
+        schema.register('keyterm', {
             isObject: true,
             allowIn: '$root',
             isSelectable: true,
-            allowChildren: ['calloutContent', 'calloutCaption'],
+            allowChildren: ['term', 'definition'],
         });
 
-        schema.register('calloutContent', {
+        schema.register('term', {
             // Cannot be split or left by the caret.
             isLimit: true,
 
-            allowIn: 'callout',
+            allowIn: 'keyterm',
 
-            // Allow content which is allowed in the root (e.g. paragraphs).
+            // Allow content which is allowed in the containers.
             allowContentOf: '$container',
         });
     }
@@ -85,61 +85,64 @@ export class Callout extends Plugin {
         const view = this.editor.editing.view;
 
         conversion.for('upcast').elementToElement({
-            model: 'callout',
+            model: 'keyterm',
             view: {
                 name: 'div',
-                classes: ['callout', 'test'],
+                classes: ['test'],
             },
         });
         conversion.for('dataDowncast').elementToElement({
-            model: 'callout',
+            model: 'keyterm',
             view: {
                 name: 'div',
-                classes: 'callout',
+                classes: 'test',
             },
         });
         conversion.for('editingDowncast').elementToElement({
-            model: 'callout',
+            model: 'keyterm',
             view: (modelElement, { writer: viewWriter }) => {
                 const div = viewWriter.createContainerElement('div', {
-                    class: 'callout',
+                    class: 'keyterm',
                 });
-                viewWriter.setCustomProperty('callout', true, div);
+                const newTermElement = viewWriter.createEditableElement('term');
+                const newDefinitionElement = viewWriter.createEditableElement('definition');
+                viewWriter.append(newCaptionElement, div);
+                // viewWriter.setCustomProperty('callout', true, div);
                 return toWidget(div, viewWriter, {
-                    label: 'callout widget',
+                    label: 'keyterm widget',
                     hasSelectionHandle: true
                 });
             },
         });
 
-        conversion.for('upcast').elementToElement({
-            model: 'calloutContent',
-            view: {
-                name: 'div',
-                classes: 'callout-content',
-            },
-        });
-        conversion.for('dataDowncast').elementToElement({
-            model: 'calloutContent',
-            view: {
-                name: 'div',
-                classes: 'callout-content',
-            },
-        });
-        conversion.for('editingDowncast').elementToElement({
-            model: 'calloutContent',
-            view: (modelElement, { writer: viewWriter }) => {
-                const div = viewWriter.createEditableElement('div', {
-                    class: 'callout-content',
-                });
+        // conversion.for('upcast').elementToElement({
+        //     model: 'term',
+        //     view: {
+        //         name: 'div',
+        //         classes: 'callout-content',
+        //     },
+        // });
+        // conversion.for('dataDowncast').elementToElement({
+        //     model: 'term',
+        //     view: {
+        //         name: 'div',
+        //         classes: 'callout-content',
+        //     },
+        // });
+        // conversion.for('editingDowncast').elementToElement({
+        //     model: 'term',
+        //     view: (modelElement, { writer: viewWriter }) => {
+        //         const div = viewWriter.createEditableElement('div', {
+        //             class: 'callout-content',
+        //         });
 
-                return toWidgetEditable(div, viewWriter);
-            },
-        });
+        //         return toWidgetEditable(div, viewWriter);
+        //     },
+        // });
     }
 }
 
-class InsertCalloutCommand extends Command {
+class InsertKeytermCommand extends Command {
     execute() {
         this.editor.model.change((writer) => {
             this.editor.model.insertObject(createCallout(writer));

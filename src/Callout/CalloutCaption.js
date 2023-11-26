@@ -1,3 +1,8 @@
+import {
+    getCaptionFromCalloutModelElement,
+    matchCalloutCaptionViewElement
+} from './CalloutUtils';
+
 const Plugin = window.CKEditor5.core.Plugin;
 const ButtonView = window.CKEditor5.ui.ButtonView;
 const Command = window.CKEditor5.core.Command;
@@ -101,7 +106,7 @@ export class CalloutCaption extends Plugin {
                 if (!modelElement.parent.is('element', 'callout')) {
                     return null;
                 }
-                return writer.createContainerElement('figcaption');
+                return writer.createContainerElement('div');
             }
         });
 
@@ -111,15 +116,16 @@ export class CalloutCaption extends Plugin {
                 if (!modelElement.parent.is('element', 'callout')) {
                     return null;
                 }
-                const figcaptionElement = writer.createEditableElement('figcaption');
-                writer.setCustomProperty('calloutCaption', true, figcaptionElement);
-                figcaptionElement.placeholder = t('Type title or keyterm');
+                const callout = modelElement.parent;
+                const captionDiv = writer.createEditableElement('keyterm');
+                writer.setCustomProperty('calloutCaption', true, captionDiv);
+                captionDiv.placeholder = t('Type title or keyterm');
                 enablePlaceholder({
                     view,
-                    element: figcaptionElement,
+                    element: captionDiv,
                     keepOnFocus: true,
                 });
-                return toWidgetEditable(figcaptionElement, writer);
+                return toWidgetEditable(captionDiv, writer);
             }
         });
     }
@@ -184,26 +190,4 @@ function getCalloutFromModelSelection(selection) {
 
     return calloutElement;
     
-}
-
-function getCaptionFromCalloutModelElement(calloutModelElement) {
-    if (!calloutModelElement) {
-        return null;
-    }
-
-    for (const node of calloutModelElement.getChildren()) {
-        if (node.is('element', 'caption')) {
-            return node;
-        }
-    }
-    return null;
-}
-
-function matchCalloutCaptionViewElement( element ) {
-    // Convert only captions for callouts.
-    if ( element.name === 'figcaption' && element.parent?.is('element', 'figure') && element.parent?.hasClass('callout')) {
-        return { name: true };
-    }
-
-    return null;
 }
