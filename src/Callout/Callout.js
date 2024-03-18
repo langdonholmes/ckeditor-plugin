@@ -16,14 +16,14 @@ export class Callout extends Plugin {
         return [Widget];
     }
 
-	constructor( editor: Editor ) {
+	constructor( editor) {
 		super();
 
 		this.editor = editor;
 
 		this.set( 'isEnabled', true );
 	}
-    
+
     init() {
         const editor = this.editor;
         const t = editor.t; // translate
@@ -149,7 +149,7 @@ class InsertCalloutCommand extends Command {
     refresh() {
         const model = this.editor.model;
         const selection = model.document.selection;
-        
+
         const allowedIn = model.schema.findAllowedParent(
             selection.getFirstPosition(),
             'callout'

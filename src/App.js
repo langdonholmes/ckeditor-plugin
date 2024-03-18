@@ -37,6 +37,7 @@ import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { Callout } from './Callout/Callout';
 import { CalloutCaption } from "./Callout/CalloutCaption";
 import { CalloutToolbar } from "./Callout/CalloutToolbar";
+import Info from "./Info/Info"
 
 console.log(window);
 
@@ -88,6 +89,7 @@ const editorConfiguration = {
         Callout,
         CalloutCaption,
         CalloutToolbar,
+        Info,
     ],
         toolbar: {
         items: [
@@ -100,10 +102,11 @@ const editorConfiguration = {
             'link', 'insertTable', 'horizontalLine', 'blockQuote', 'specialCharacters',
             '|',
             'bulletedList', 'numberedList',
-            '-',
-            'callout',
             '|',
             'sourceEditing',
+            'Info',
+            'Callout'
+
         ],
         shouldNotGroupWhenFull: true
         },

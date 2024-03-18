@@ -151,7 +151,7 @@ class ToggleCalloutCaptionCommand extends Command {
 
         if (!this.isEnabled) {
             this.value = false;
-        } else {    
+        } else {
             this.value = !!getCaptionFromCalloutModelElement(selectedElement);
             this.calloutElement = selectedElement;
         }
@@ -189,5 +189,5 @@ function getCalloutFromModelSelection(selection) {
     }
 
     return calloutElement;
-    
+
 }
