@@ -34,10 +34,11 @@ import ckeditor5MaximumLengthDll from "@reinmar/ckeditor5-maximum-length/build/m
 // Development
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 
-import { Callout } from './Callout/Callout';
+import Callout from './CalloutBox/Callout';
 import { CalloutCaption } from "./Callout/CalloutCaption";
 import { CalloutToolbar } from "./Callout/CalloutToolbar";
 import Info from "./Info/Info"
+import Warning from "./Warning/Warning"
 
 console.log(window);
 
@@ -86,10 +87,12 @@ const editorConfiguration = {
         window.CKEditor5.table.TableCaption,
         window.CKEditor5.wordCount.WordCount,
         window.CKEditor5.highlight.Highlight,
-        Callout,
-        CalloutCaption,
-        CalloutToolbar,
+        // Callout,
+        // CalloutCaption,
+        // CalloutToolbar,
         Info,
+        Warning,
+        Callout
     ],
         toolbar: {
         items: [
@@ -105,8 +108,8 @@ const editorConfiguration = {
             '|',
             'sourceEditing',
             'Info',
+            'Warning',,
             'Callout'
-
         ],
         shouldNotGroupWhenFull: true
         },
