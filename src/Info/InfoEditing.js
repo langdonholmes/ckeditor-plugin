@@ -44,9 +44,10 @@ export default class InfoEditing extends Plugin {
           name: 'Info',
           attributes: [ 'title' ]
       },
-      view: {
-          name: 'section',
-          classes: 'Info'
+        view: ( modelElement, { writer } ) => {
+            return writer.createContainerElement(
+                'section',  { class: 'Info', title: modelElement.getAttribute( 'title' )}
+            );
       }
     } );
     conversion
@@ -72,7 +73,7 @@ export default class InfoEditing extends Plugin {
             classes: 'Info'
           },
           model: ( viewElement, { writer } ) => {
-            return writer.createElement( 'Info', { level: viewElement.getAttribute( 'title' ) } );
+            return writer.createElement( 'Info', { title: viewElement.getAttribute( 'title' ) } );
           }
         } );
 
