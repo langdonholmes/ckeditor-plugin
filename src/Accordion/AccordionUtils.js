@@ -33,7 +33,7 @@ export function getSelectedAccordionModelElement(selection) {
 /**
  * Creates a `<accordionItem>` model element with the necessary child elements.
  */
-export function createAccordionItem(writer, isOpen = false) {
+export function createAccordionItem(writer, isOpen = true) {
   const accordionItem = writer.createElement("AccordionItem");
   const accordionItemHeader = writer.createElement("AccordionItemHeader");
   const accordionItemButton = writer.createElement("AccordionItemButton", {

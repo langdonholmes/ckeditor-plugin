@@ -64,7 +64,7 @@ export default class AccordionEditing extends Plugin {
       // Limits commands like "select all" to its contents when the cursor is inside.
       isLimit: true,
       // Allows almost everything inside, same as if at the root of the editor.
-      allowContentOf: "$block",
+      allowContentOf: "$root",
       allowIn: "AccordionCollapse",
     });
     schema.addAttributeCheck((context, attributeName) => {
@@ -371,7 +371,7 @@ export default class AccordionEditing extends Plugin {
       new ModifyAccordionCommand(
         editor,
         "AccordionItemsStayOpen",
-        false // Default value for ItemsStayOpen
+        true // Default value for AccordionItemsStayOpen
       )
     );
     commands.add("AccordionOpenAll", new AccordionOpenAllCommand(editor));

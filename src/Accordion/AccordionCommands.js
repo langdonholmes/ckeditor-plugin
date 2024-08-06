@@ -23,10 +23,11 @@ export class InsertAccordionCommand extends Command {
     // Determine if the cursor (selection) is in a position where adding an
     // accordion is permitted. This is based on the schema of the model(s)
     // currently containing the cursor.
+    // Also ensures that no accordion is selected (to prevent nesting).
     this.isEnabled = schema.checkChild(
       getParentElement(document.selection, model),
       "AccordionBlock"
-    );
+    ) && !getSelectedAccordionModelElement(document.selection);
   }
 
   execute() {
@@ -38,13 +39,13 @@ export class InsertAccordionCommand extends Command {
       // structure.
       const accordion = writer.createElement("AccordionBlock", {
         AccordionId: uid(),
-        AccordionItemsStayOpen: false,
+        AccordionItemsStayOpen: "true",
       });
       const { accordionItem } = createAccordionItem(writer);
       writer.append(accordionItem, accordion);
       model.insertObject(accordion);
       editing.view.focus();
-      writer.setSelection(accordion, "on"); // Error is here!
+      writer.setSelection(accordion, "on");
     });
   }
 }
@@ -54,10 +55,6 @@ export class InsertAccordionCommand extends Command {
  * item below button is pressed with an accordion item selected.
  */
 export class InsertAccordionItemCommand extends Command {
-  constructor(editor) {
-    super(editor);
-    this.accordionItem = null;
-  }
 
   refresh() {
     const selection = this.editor.model.document.selection;
@@ -70,32 +67,9 @@ export class InsertAccordionItemCommand extends Command {
     const accordionItem = this.accordionItem;
     const value = options ? options.value : "after";
     model.change((writer) => {
-      let isOpen =
-        commands.get("AccordionItemsStayOpen")?.value === "true" &&
-        isAccordionItemOpen(accordionItem);
-      const accordion = accordionItem.parent;
-      if (accordion.getChildIndex(accordionItem) === 0) {
-        const secondAccordionItem = accordion.getChild(1);
-        const secondAccordionItemIsOpen = secondAccordionItem
-          ? isAccordionItemOpen(secondAccordionItem)
-          : false;
-        if (value === "before") {
-          // An accordion item is being inserted above the first item, and the
-          // "open first item" setting is on. Closes the item as it will no
-          // longer be the first.
-          isOpen = !!commands.get("AccordionFirstItemOpen")?.value;
-          setAccordionItemIsOpen(
-            accordionItem,
-            writer,
-            secondAccordionItemIsOpen
-          );
-        } else {
-          isOpen = secondAccordionItemIsOpen;
-        }
-      }
       const newAccordionItem = createAccordionItem(
         writer,
-        isOpen
+        true // isOpen
       ).accordionItem;
       writer.insert(newAccordionItem, accordionItem, value);
     });
@@ -148,7 +122,7 @@ export class AccordionFirstItemOpenCommand extends Command {
   constructor(editor) {
     super(editor);
     this.accordionWidget = null;
-    this.value = false;
+    this.value = true;
   }
 
   refresh() {
