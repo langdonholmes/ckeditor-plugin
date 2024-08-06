@@ -354,7 +354,8 @@ module.exports = function (webpackEnv) {
           // back to the "file" loader at the end of the loader list.
           oneOf: [
             {
-              test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+              // test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+              test: /\.svg$/,
               use: [ 'raw-loader' ]
             },
             {
