@@ -52,7 +52,7 @@ export default class AccordionEditing extends Plugin {
       // Limits commands like "select all" to its contents when the cursor is inside.
       isLimit: true,
       // Allows only text and text-like elements (like icons) inside.
-      allowContentOf: "$block",
+      allowContentOf: "$block", // $text attributes disallowed by PlainText plugin.
       allowAttributes: ["AccordionItemButtonCollapsed"],
       allowIn: "AccordionItemHeader",
     });
@@ -63,8 +63,7 @@ export default class AccordionEditing extends Plugin {
     schema.register("AccordionItemContent", {
       // Limits commands like "select all" to its contents when the cursor is inside.
       isLimit: true,
-      // Allows almost everything inside, same as if at the root of the editor.
-      allowContentOf: "$root",
+      allowChildren: ["paragraph", "listItem"],
       allowIn: "AccordionCollapse",
     });
     schema.addAttributeCheck((context, attributeName) => {

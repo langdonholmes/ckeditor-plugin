@@ -23,11 +23,10 @@ export class InsertAccordionCommand extends Command {
     // Determine if the cursor (selection) is in a position where adding an
     // accordion is permitted. This is based on the schema of the model(s)
     // currently containing the cursor.
-    // Also ensures that no accordion is selected (to prevent nesting).
     this.isEnabled = schema.checkChild(
       getParentElement(document.selection, model),
       "AccordionBlock"
-    ) && !getSelectedAccordionModelElement(document.selection);
+    );
   }
 
   execute() {
@@ -55,7 +54,6 @@ export class InsertAccordionCommand extends Command {
  * item below button is pressed with an accordion item selected.
  */
 export class InsertAccordionItemCommand extends Command {
-
   refresh() {
     const selection = this.editor.model.document.selection;
     this.accordionItem = getSelectedAccordionItemModelElement(selection);
@@ -170,11 +168,13 @@ export class AccordionOpenAllCommand extends Command {
   }
 
   execute() {
-    this.editor.model.change((writer) =>
-      [...this.accordionWidget?.getChildren()].forEach((accordionItem) =>
-        setAccordionItemIsOpen(accordionItem, writer, true)
-      )
-    );
+    this.editor.model.change((writer) => {
+      if (this.accordionWidget) {
+        [...this.accordionWidget.getChildren()].forEach((accordionItem) =>
+          setAccordionItemIsOpen(accordionItem, writer, true)
+        );
+      }
+    });
   }
 }
 

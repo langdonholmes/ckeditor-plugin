@@ -1,9 +1,11 @@
 import AccordionEvents from "./AccordionEvents";
 import { getSelectedAccordionWidget } from "./AccordionUtils";
 import "./Accordion.css";
-import AccordionIcon from "./icons/accordion.svg";
-import AccordionItemIcon from "./icons/accordion-item.svg";
-import AccordionOpenCollapseIcon from "./icons/accordion-open-collapse.svg";
+import {
+  AccordionIcon,
+  AccordionItemIcon,
+  AccordionOpenCollapseIcon,
+} from "./AccordionIcons";
 
 const Plugin = window.CKEditor5.core.Plugin;
 
@@ -13,8 +15,6 @@ const addListToDropdown = window.CKEditor5.ui.addListToDropdown;
 const createDropdown = window.CKEditor5.ui.createDropdown;
 const Collection = window.CKEditor5.utils.Collection;
 const WidgetToolbarRepository = window.CKEditor5.widget.WidgetToolbarRepository;
-
-console.log("Accordion Icon", AccordionIcon);
 
 /**
  * Defines the user interface for editing Accordion widgets.
@@ -40,7 +40,6 @@ export default class AccordionUI extends Plugin {
     this.events = plugins.get("AccordionEvents");
     const componentFactory = ui.componentFactory;
     const command = this.commands.get("insertAccordion");
-
 
     // Creates button components that can be added to the main editor toolbar
     // through the config, or to the contextual balloon toolbar.
