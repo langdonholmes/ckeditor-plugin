@@ -41,6 +41,7 @@ import Callout from "./CalloutBox/Callout";
 import Info from "./Info/Info";
 import Warning from "./Warning/Warning";
 import Accordion from "./Accordion/Accordion";
+import CodingSandbox from "./CodingSandbox/CodingSandbox";
 
 console.log("CKEditor5", window.CKEditor5); // Useful for figuring out where CKeditor classes and methods are stored.
 
@@ -93,6 +94,7 @@ const editorConfiguration = {
     Warning,
     Callout,
     Accordion,
+      CodingSandbox
   ],
   toolbar: {
     items: [
@@ -123,6 +125,7 @@ const editorConfiguration = {
       "Callout",
       "|",
       "Accordion",
+        "CodingSandbox"
     ],
     shouldNotGroupWhenFull: true,
   },
