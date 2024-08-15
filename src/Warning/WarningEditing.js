@@ -11,8 +11,6 @@ export default class WarningEditing extends Plugin {
         return [ Widget ];
     }
     init() {
-        console.log( 'WarningEditing#init() got called' );
-
         this._defineSchema();
         this._defineConverters();
         this.editor.commands.add( 'insertWarning', new InsertWarningCommand( this.editor ) );

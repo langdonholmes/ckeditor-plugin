@@ -11,8 +11,6 @@ export default class CalloutEditing extends Plugin {
         return [ Widget ];
     }
     init() {
-        console.log( 'CalloutEditing#init() got called' );
-
         this._defineSchema();
         this._defineConverters();
         this.editor.commands.add( 'insertCallout', new InsertCalloutCommand( this.editor ) );

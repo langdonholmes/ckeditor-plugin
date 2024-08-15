@@ -5,8 +5,6 @@ const ButtonView = window.CKEditor5.ui.ButtonView;
 
 export default class CalloutUI extends Plugin {
     init() {
-        console.log('CalloutUI#init() got called');
-
         const editor = this.editor;
         const t = editor.t;
 

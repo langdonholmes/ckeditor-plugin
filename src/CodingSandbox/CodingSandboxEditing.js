@@ -31,7 +31,7 @@ export default class CodingSandboxEditing extends Plugin {
       // Cannot be split or left by the caret.
       isLimit: true,
       allowIn: "CodingSandbox",
-      allowChildren: ["codeBlock"],
+      allowChildren: ["hljsCodeBlock"],
     });
   }
 

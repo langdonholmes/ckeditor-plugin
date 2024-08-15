@@ -11,7 +11,7 @@ import ckeditor5AlignmentDll from "@ckeditor/ckeditor5-alignment/build/alignment
 import ckeditor5AutoformatDll from "@ckeditor/ckeditor5-autoformat/build/autoformat.js";
 import ckeditor5BasicStylesDll from "@ckeditor/ckeditor5-basic-styles/build/basic-styles.js"; // eslint-disable-line no-unused-vars
 import ckeditor5BlockQuoteDll from "@ckeditor/ckeditor5-block-quote/build/block-quote.js";
-import ckeditor5CodeBlockDll from "@ckeditor/ckeditor5-code-block/build/code-block.js";
+// import ckeditor5CodeBlockDll from "@ckeditor/ckeditor5-code-block/build/code-block.js";
 import ckeditor5EssentialsDll from "@ckeditor/ckeditor5-essentials/build/essentials.js"; // eslint-disable-line no-unused-vars
 import ckeditor5FontDll from "@ckeditor/ckeditor5-font/build/font.js";
 import ckeditor5HeadingDll from "@ckeditor/ckeditor5-heading/build/heading.js";
@@ -42,8 +42,10 @@ import Info from "./Info/Info";
 import Warning from "./Warning/Warning";
 import Accordion from "./Accordion/Accordion";
 import CodingSandbox from "./CodingSandbox/CodingSandbox";
+import HLJSCodeBlock from "./HLJSCodeBlock/hljscodeblock";
+import StaticCode from "./StaticCode/StaticCode";
 
-console.log("CKEditor5", window.CKEditor5); // Useful for figuring out where CKeditor classes and methods are stored.
+// console.log("CKEditor5", window.CKEditor5); // Useful for figuring out where CKeditor classes and methods are stored.
 
 const editorConfiguration = {
   plugins: [
@@ -57,7 +59,7 @@ const editorConfiguration = {
     window.CKEditor5.basicStyles.Subscript,
     window.CKEditor5.basicStyles.Superscript,
     window.CKEditor5.blockQuote.BlockQuote,
-    window.CKEditor5.codeBlock.CodeBlock,
+    // window.CKEditor5.codeBlock.CodeBlock,
     window.CKEditor5.essentials.Essentials,
     window.CKEditor5.findAndReplace.FindAndReplace,
     window.CKEditor5.heading.Heading,
@@ -94,7 +96,9 @@ const editorConfiguration = {
     Warning,
     Callout,
     Accordion,
-      CodingSandbox
+      CodingSandbox,
+      HLJSCodeBlock,
+      StaticCode
   ],
   toolbar: {
     items: [
@@ -108,7 +112,7 @@ const editorConfiguration = {
       "underline",
       "strikethrough",
       "code",
-      "codeBlock",
+      // "codeBlock",
       "|",
       "link",
       "insertTable",
@@ -125,7 +129,8 @@ const editorConfiguration = {
       "Callout",
       "|",
       "Accordion",
-        "CodingSandbox"
+        "CodingSandbox",
+        "StaticCode"
     ],
     shouldNotGroupWhenFull: true,
   },
@@ -258,17 +263,17 @@ const CKEditorInput = ({
         // You can store the "editor" and use when it is needed.
         // setEditorInstance( editor );
         CKEditorInspector.attach(editor);
-        console.log("Editor is ready to use!", editor);
+        // console.log("Editor is ready to use!", editor);
       }}
       onChange={(event, editor) => {
         const data = editor.getData();
-        console.log({ event, editor, data });
+        // console.log({ event, editor, data });
       }}
       onBlur={(event, editor) => {
-        console.log("Blur.", editor);
+        // console.log("Blur.", editor);
       }}
       onFocus={(event, editor) => {
-        console.log("Focus.", editor);
+        // console.log("Focus.", editor);
       }}
     />
   );

@@ -29,7 +29,7 @@ function createStaticCode(writer, language) {
   writer.append(StaticCodeContent, StaticCode);
 
   writer.appendElement(
-    "codeBlock",
+    "hljsCodeBlock",
     { language: `${language.toLowerCase()}` },
     StaticCodeContent,
   );

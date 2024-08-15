@@ -38,7 +38,7 @@ export default class StaticCodeEditing extends Plugin {
     schema.register("StaticCodeContent", {
       isLimit: true,
       allowIn: "StaticCode",
-      allowChildren: ["codeBlock"],
+      allowChildren: ["hljsCodeBlock"],
     });
   }
 
